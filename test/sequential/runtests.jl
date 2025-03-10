@@ -2,6 +2,7 @@ module GridapPETScSequentialTests
 
 using Test
 using MPI
+using GridapPETSc
 
 @time @testset "PETSC" begin include("PETSCTests.jl") end
 
@@ -22,6 +23,8 @@ using MPI
 @time @testset "DarcyDriver" begin include("DarcyDriver.jl") end
 
 @time @testset "PLaplacianDriver" begin include("PLaplacianDriver.jl") end
+
+@time @testset "HelmholtzPMLDriver" begin PetscScalar == ComplexF64 ? include("HelmholtzDriver.jl") : nothing end
 
 # Partitioned in sequential mode
 

@@ -62,7 +62,7 @@ function partitioned_tests(distribute,nparts)
         J = [6,7,4]
         V = [9,9,1]
       end
-      I,J,Float64.(V)
+      I,J,PetscScalar.(V)
     end |> tuple_of_arrays
 
   else
@@ -77,7 +77,7 @@ function partitioned_tests(distribute,nparts)
       I = [1,2,3,1,3,4,5,5,4,5,6,7,6]
       J = [1,2,3,5,6,4,5,3,6,7,6,7,4]
       V = [9,9,9,1,1,9,9,1,1,1,9,9,1]
-      I,J,Float64.(V)
+      I,J,PetscScalar.(V)
     end |> tuple_of_arrays
 
   end
@@ -116,7 +116,7 @@ function partitioned_tests(distribute,nparts)
   ids = PRange(ids_partition)
   values = map(partition(ids)) do ids
     println(local_to_global(ids))
-    return 10.0*local_to_global(ids)
+    return PetscScalar(10.0)*local_to_global(ids)
   end
 
   v = PVector(values,partition(ids))
@@ -150,8 +150,8 @@ function partitioned_tests(distribute,nparts)
     ss = symbolic_setup(solver,A)
     ns = numerical_setup(ss,A)
     consistent!(v) |> fetch
-    y = pfill(0.0,partition(ids))
-    z = pfill(0.0,partition(ids))
+    y = pfill(PetscScalar(0.0),partition(ids))
+    z = pfill(PetscScalar(0.0),partition(ids))
     mul!(y,A,v)
     consistent!(y) |> fetch
     z = solve!(z,ns,y)
@@ -159,7 +159,7 @@ function partitioned_tests(distribute,nparts)
 
     nspetsc = numerical_setup(symbolic_setup(PETScLinearSolver(),B),B)
     ypetsc = convert(PETScVector,y)
-    zpetsc = PETScVector(0.0,ids)
+    zpetsc = PETScVector(PetscScalar(0.0),ids)
     zpetsc = solve!(zpetsc,nspetsc,ypetsc)
 
     test_vectors(y,ypetsc,ids)

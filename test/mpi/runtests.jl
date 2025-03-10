@@ -1,4 +1,5 @@
 module GridapPETScMPITests
+using GridapPETSc: PetscScalar
 using Test
 using MPI
 if MPI.Initialized()
@@ -9,4 +10,5 @@ end
 @time @testset "GCTests" begin include("GCTestsRun.jl") end
 @time @testset "PoissonTests" begin include("PoissonTestsRun.jl") end
 @time @testset "DarcyTests" begin include("DarcyTestsRun.jl") end
+@time @testset "HelmholtzTests" begin PetscScalar == ComplexF64 ? include("HelmholtzTestsRun.jl") : nothing end
 end # module

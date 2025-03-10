@@ -10,15 +10,15 @@ GridapPETSc.Init(args=split(options))
 op  = Gridap.Algebra.NonlinearOperatorMock()
 nls = PETScNonlinearSolver()
 
-x0 = zero_initial_guess(op)
-x = [1.0, 3.0]
+x0 = PetscScalar.(zero_initial_guess(op))
+x = PetscScalar.([1.0, 3.0])
 Gridap.Algebra.test_nonlinear_solver(nls,op,x0,x)
 
-x0 = [2.1,2.9]
-x = [2.0, 3.0]
+x0 = PetscScalar.([2.1,2.9])
+x = PetscScalar.([2.0, 3.0])
 Gridap.Algebra.test_nonlinear_solver(nls,op,x0,x)
 
-x0 = zero_initial_guess(op)
+x0 = PetscScalar.(zero_initial_guess(op))
 cache = solve!(x0,nls,op)
 
 GridapPETSc.Finalize(cache)
