@@ -11,7 +11,7 @@ using SparseMatricesCSR
 tol = 1e-14
 maxits = 2000
 
-options = "-pc_type gamg -ksp_type gmres -ksp_atol 0.0 -ksp_rtol $(tol) -ksp_max_it $(maxits)"
+options = "-pc_type gamg -ksp_type gmres -ksp_atol 0.0 -ksp_rtol $(tol) -ksp_max_it $(maxits) -ksp_monitor"
 
 GridapPETSc.with(args=split(options)) do
    
